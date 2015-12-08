@@ -14,6 +14,9 @@ matrix:
 
 sudo: false
 
+services:
+  - memcached
+
 before_script:
     - composer self-update
     - composer install --dev --prefer-source --no-interaction
