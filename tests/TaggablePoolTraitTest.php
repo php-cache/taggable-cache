@@ -1,7 +1,7 @@
 <?php
 
 namespace Cache\Taggable\Tests;
-use Cache\Taggable\Tests\Helper\CachePool;
+use Cache\IntegrationTests\Helper\CachePool;
 
 class TaggablePoolTraitTest extends \PHPUnit_Framework_TestCase
 {

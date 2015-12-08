@@ -22,9 +22,10 @@
         "psr/cache-implementation": "~1.0"
     },
     "require-dev":  {
-        "phpunit/phpunit":      "^5.1|^4.0",
-        "cache/doctrine-adapter": "dev-tag",
-        "psr/cache":            "dev-master"
+        "phpunit/phpunit":         "^5.1|^4.0",
+        "cache/doctrine-adapter":  "dev-master",
+        "cache/integration-tests": "dev-master",
+        "psr/cache":               "dev-master"
     },
     "repositories": [
         {
