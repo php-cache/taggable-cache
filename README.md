@@ -26,7 +26,7 @@ $item = $psr6Cache->getItem('aaron', ['developer', 'nice guy']);
 $item->set('foobar');
 $psr6Cache->save($item);
 
-$item = $psr6Cache->getItem('the king of Sweden', ['nice guy', 'king]);
+$item = $psr6Cache->getItem('the king of Sweden', ['nice guy', 'king']);
 $item->set('foobar');
 $psr6Cache->save($item);
 ```
@@ -47,7 +47,7 @@ To clear the cache you may do like this:
 $psr6Cache->clear(['nice guy']);
 $psr6Cache->getItem('tobias', ['developer', 'speaker'])->isHit(); // true
 $psr6Cache->getItem('aaron', ['developer', 'nice guy'])->isHit(); // false
-$psr6Cache->getItem('the king of Sweden', ['nice guy', 'king])->isHit(); // false
+$psr6Cache->getItem('the king of Sweden', ['nice guy', 'king'])->isHit(); // false
 
 // To clear everything you do as you usually do
 $psr6Cache->clear();
