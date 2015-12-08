@@ -10,6 +10,15 @@ trait TaggablePoolTrait
     /**
      * From Psr\Cache\CacheItemPoolInterface.
      *
+     * @param CacheItemInterface $item
+     *
+     * @return bool
+     */
+    abstract public function save(CacheItemInterface $item);
+
+    /**
+     * From Psr\Cache\CacheItemPoolInterface.
+     *
      * @param string $key
      *
      * @return CacheItemInterface
@@ -17,13 +26,13 @@ trait TaggablePoolTrait
     abstract public function getItem($key);
 
     /**
-     * From Psr\Cache\CacheItemPoolInterface.
+     * Return an CacheItemInterface for a tag. This function should not run generateCacheKey.
      *
-     * @param CacheItemInterface $item
+     * @param $key
      *
-     * @return bool
+     * @return CacheItemInterface
      */
-    abstract public function save(CacheItemInterface $item);
+    abstract protected function getTagItem($key);
 
     /**
      * Reset the tag and return the new tag identifier.
@@ -80,7 +89,7 @@ trait TaggablePoolTrait
      */
     private function getTagId($name)
     {
-        $item = $this->getItem($this->getTagKey($name));
+        $item = $this->getTagItem($this->getTagKey($name));
 
         if ($item->isHit()) {
             return $item->get();

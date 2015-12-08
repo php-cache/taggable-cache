@@ -32,6 +32,19 @@ class CachePool
         return $item;
     }
 
+    protected function getTagItem($key)
+    {
+        $item = false;
+        if (isset($this->cache[$key])) {
+            $item = $this->cache[$key];
+        }
+        if (false === $item) {
+            $item = new CacheItem($key, []);
+        }
+
+        return $item;    }
+
+
     public function save(CacheItemInterface $item)
     {
         $this->cache[$item->getKey()]=$item;
