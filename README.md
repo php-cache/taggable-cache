@@ -9,7 +9,7 @@ Note: Performance will be best with a driver such as memcached, which automatica
 
 
 To use an implementation of PSR-6 cache that also implement the `TaggablePoolInterface` do like the following code. 
-We create three cache items and store them in the cache with different tags. The order of the tag matters. 
+We create three cache items and store them in the cache with different tags. The order of the tags does not matter. 
 
 ```php
 use Doctrine\Common\Cache\MemcachedCache;
@@ -35,7 +35,7 @@ The following code shows how tags work:
 
 ```php
 $psr6Cache->getItem('tobias', ['developer', 'speaker'])->isHit(); // true
-$psr6Cache->getItem('tobias', ['speaker', 'developer'])->isHit(); // false
+$psr6Cache->getItem('tobias', ['speaker', 'developer'])->isHit(); // true
 $psr6Cache->getItem('tobias', ['developer'])->isHit(); // false
 ```
 
