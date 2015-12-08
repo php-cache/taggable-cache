@@ -49,6 +49,9 @@ trait TaggablePoolTrait
      */
     protected function generateCacheKey($key, array $tags)
     {
+        // We sort the tags because the order should not matter
+        sort($tags);
+
         return $this->getTagCollectionKeyPrefix($tags).$key;
     }
 
