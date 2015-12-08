@@ -18,6 +18,7 @@ trait TaggablePoolTrait
 
     /**
      * From Psr\Cache\CacheItemPoolInterface.
+     * This function should run $this->generateCacheKey to get a key using the tags.
      *
      * @param string $key
      *
@@ -26,7 +27,8 @@ trait TaggablePoolTrait
     abstract public function getItem($key);
 
     /**
-     * Return an CacheItemInterface for a tag. This function should not run generateCacheKey.
+     * Return an CacheItemInterface for a tag.
+     * This function MUST NOT run $this->generateCacheKey.
      *
      * @param $key
      *
