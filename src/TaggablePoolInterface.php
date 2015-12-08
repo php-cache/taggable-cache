@@ -3,7 +3,8 @@
 namespace Cache\Taggable;
 
 /**
- * Lets you add tags to your cache items.
+ * Lets you add tags to your cache items. Prepend the PSR-6 function arguments with an array of tag names for
+ * functions not requiring an CacheItemInterface
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
