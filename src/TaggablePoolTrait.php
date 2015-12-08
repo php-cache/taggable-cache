@@ -34,23 +34,11 @@ trait TaggablePoolTrait
      *
      * @return string
      */
-    private function flushTag($name)
+    protected function flushTag($name)
     {
         $item = $this->getItem($this->getTagKey($name));
 
         return $this->generateNewTagId($item);
-    }
-
-    /**
-     * @param TaggableItemInterface $storage
-     *
-     * @return string
-     */
-    protected function generateCacheKeyFromItem(TaggableItemInterface $item)
-    {
-        $prefix = $this->getTagCollectionKeyPrefix($item->getTags());
-
-        return $prefix.$item->getKey();
     }
 
     /**
