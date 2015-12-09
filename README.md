@@ -52,3 +52,16 @@ $psr6Cache->getItem('the king of Sweden', ['nice guy', 'king'])->isHit(); // fal
 // To clear everything you do as you usually do
 $psr6Cache->clear();
 ```
+
+## Implementation
+
+If you are writing a PSR-6 implementation you may want to use this library. It is recommended that your object
+implementing `CacheItemPoolInterface` also implements `TaggablePoolInterface`. That same object should also use
+the `TaggablePoolTrait`. The trait has two protected methods; `generateCacheKey($key, array $tags)` and 
+`flushTag($name)`. 
+
+When implementing taggs, all the cache keys will change. We have to generate new cache keys that depends on the tags.
+You need to do two changes on the implementation of `CacheItemPoolInterface`. First, you need to generate a new cache key
+for all methods in `CacheItemPoolInterface` that not accepts a `CacheItemInterface`. You should of course use the 
+`TaggablePoolTrait::generateCacheKey($key, array $tags)` function. Second, you need to implement a protected 
+`CachePool::getTagItem($key)` function that does not generare a new cache key. This is used internally to store the tags.
