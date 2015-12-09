@@ -5,6 +5,11 @@ namespace Cache\Taggable;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
+/**
+ * Use this trait with a CacheItemPoolInterface to support tagging.
+ *
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ */
 trait TaggablePoolTrait
 {
     /**
@@ -47,12 +52,14 @@ trait TaggablePoolTrait
      */
     protected function flushTag($name)
     {
-        $item = $this->getItem($this->getTagKey($name));
+        $item = $this->getTagItem($this->getTagKey($name));
 
         return $this->generateNewTagId($item);
     }
 
     /**
+     * Generate a good cache key that is dependent of the tags. This key should be the key of the CacheItem
+     *
      * @param string $key
      * @param array  $tags
      *
@@ -63,23 +70,13 @@ trait TaggablePoolTrait
         // We sort the tags because the order should not matter
         sort($tags);
 
-        return $this->getTagCollectionKeyPrefix($tags).$key;
-    }
-
-    /**
-     * @param array $tags
-     *
-     * @return string
-     */
-    private function getTagCollectionKeyPrefix(array $tags)
-    {
         $tagIds = array();
         foreach ($tags as $tag) {
             $tagIds[] = $this->getTagId($tag);
         }
         $tagsNamespace = sha1(implode('|', $tagIds));
 
-        return $tagsNamespace.':';
+        return $tagsNamespace.':'.$key;
     }
 
     /**

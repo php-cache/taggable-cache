@@ -3,7 +3,7 @@
 namespace Cache\Taggable\Tests;
 
 use Cache\Doctrine\CachePool;
-use Cache\IntegrationTests\Tests\TaggableCachePoolTest;
+use Cache\IntegrationTests\TaggableCachePoolTest;
 use Doctrine\Common\Cache\MemcachedCache;
 
 class FunctionalTest extends TaggableCachePoolTest
