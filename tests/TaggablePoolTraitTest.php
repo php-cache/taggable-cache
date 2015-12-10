@@ -1,15 +1,25 @@
 <?php
 
+/*
+ * This file is part of php-cache\taggable-cache package.
+ *
+ * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Cache\Taggable\Tests;
+
 use Cache\IntegrationTests\Helper\CachePool;
 
 class TaggablePoolTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function testGenerateCacheKey()
     {
-        $cache = new CachePool();
+        $cache    = new CachePool();
         $inputKey = 'foobar';
-        $tags = ['bar', 'biz'];
+        $tags     = ['bar', 'biz'];
 
         $key1 = $cache->exposeGenerateCacheKey($inputKey, $tags);
         $key2 = $cache->exposeGenerateCacheKey($inputKey, $tags);
@@ -23,7 +33,7 @@ class TaggablePoolTraitTest extends \PHPUnit_Framework_TestCase
     public function testFlushTag()
     {
         $cache = new CachePool();
-        $item = $cache->getItem('foo', ['tag']);
+        $item  = $cache->getItem('foo', ['tag']);
         $item->set('bar');
         $cache->save($item);
 
