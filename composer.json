@@ -18,13 +18,11 @@
         }
     ],
     "require":      {
-        "php":                      "^5.5|^7"
+        "php":       "^5.5|^7",
+        "psr/cache": "1.0.0"
     },
     "require-dev":  {
-        "phpunit/phpunit":         "^5.1|^4.0",
-        "cache/integration-tests": "dev-master",
-        "cache/doctrine-adapter": "dev-master",
-        "psr/cache":               "1.0.0"
+        "phpunit/phpunit": "^5.1|^4.0"
     },
     "autoload":     {
         "psr-4": {
