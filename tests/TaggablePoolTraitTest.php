@@ -11,7 +11,7 @@
 
 namespace Cache\Taggable\Tests;
 
-use Cache\IntegrationTests\Helper\CachePool;
+use Cache\Taggable\Tests\Helper\CachePool;
 
 class TaggablePoolTraitTest extends \PHPUnit_Framework_TestCase
 {
