@@ -67,7 +67,7 @@ trait TaggablePoolTrait
     }
 
     /**
-     * Generate a good cache key that is dependent of the tags. This key should be the key of the CacheItem
+     * Generate a good cache key that is dependent of the tags. This key should be the key of the CacheItem.
      *
      * @param string $key
      * @param array  $tags
@@ -79,7 +79,7 @@ trait TaggablePoolTrait
         // We sort the tags because the order should not matter
         sort($tags);
 
-        $tagIds = array();
+        $tagIds = [];
         foreach ($tags as $tag) {
             $tagIds[] = $this->getTagId($tag);
         }
