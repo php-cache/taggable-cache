@@ -12,7 +12,6 @@
 namespace Cache\Taggable;
 
 use Psr\Cache\CacheItemInterface;
-use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * Use this trait with a CacheItemPoolInterface to support tagging.
@@ -121,8 +120,8 @@ trait TaggablePoolTrait
     /**
      * A TagId is retrieved from cache using the TagKey.
      *
-     * @param CacheItemPoolInterface $storage
-     * @param CacheItemInterface     $item
+     * @param \Psr\Cache\CacheItemPoolInterface $storage
+     * @param CacheItemInterface                $item
      *
      * @return string
      */
