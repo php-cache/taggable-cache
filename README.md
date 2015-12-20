@@ -4,7 +4,7 @@
 This repository has one trait and one interfaces that makes a PSR-6 cache implementation taggable. Using tags allow you 
 to tag related items, and then clear the cached data for that tag only.
 
-*Note: Performance will be best with a driver such as memcached, which automatically purges stale records.*
+*Note: Performance will be best with a driver such as memcached or redis, which automatically purges stale records.*
 
 ## Usage
 
