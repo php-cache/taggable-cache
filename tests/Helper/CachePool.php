@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of php-cache\taggable-cache package.
+ *
+ * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Cache\Taggable\Tests\Helper;
 
 use Cache\Taggable\TaggablePoolTrait;
 use Psr\Cache\CacheItemInterface;
 
 /**
- * A cache pool used in tests
+ * A cache pool used in tests.
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
@@ -15,11 +24,11 @@ class CachePool
     use TaggablePoolTrait;
 
     /**
-     * @var array
+     * @type array
      */
     private $memoryCache;
 
-    public function getItem($key, array $tags = array())
+    public function getItem($key, array $tags = [])
     {
         $taggedKey = $this->generateCacheKey($key, $tags);
 
@@ -37,10 +46,10 @@ class CachePool
         return $item;
     }
 
-
     public function save(CacheItemInterface $item)
     {
-        $this->memoryCache[$item->getKey()]=$item;
+        $this->memoryCache[$item->getKey()] = $item;
+
         return true;
     }
 

@@ -1,7 +1,7 @@
 {
     "name":         "cache/taggable-cache",
     "type":         "library",
-    "description":  "Add tag support to your  PSR-6 cache implementation",
+    "description":  "Add tag support to your PSR-6 cache implementation",
     "keywords":     ["cache", "psr6", "tag", "taggable"],
     "homepage":     "https://github.com/php-cache/taggable-cache",
     "license":      "MIT",
@@ -17,7 +17,8 @@
             "homepage": "https://github.com/nyholm"
         }
     ],
-    "require":      {
+    "require":
+    {
         "php":       "^5.5|^7",
         "psr/cache": "1.0.0"
     },
