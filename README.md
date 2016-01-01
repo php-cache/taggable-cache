@@ -1,5 +1,5 @@
 # Taggable PSR-6 cache
-[![Build Status](https://travis-ci.org/php-cache/taggable-cache.svg)](https://travis-ci.org/php-cache/taggable-cache)
+[![Build Status](https://travis-ci.org/php-cache/taggable-cache.svg)](https://travis-ci.org/php-cache/taggable-cache) [![codecov.io](https://codecov.io/github/php-cache/taggable-cache/coverage.svg?branch=master)](https://codecov.io/github/php-cache/taggable-cache?branch=master)
 
 This repository has one trait and one interfaces that makes a PSR-6 cache implementation taggable. Using tags allow you 
 to tag related items, and then clear the cached data for that tag only.
