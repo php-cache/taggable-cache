@@ -81,12 +81,12 @@ class Pool implements CacheItemPoolInterface, TaggablePoolInterface
 
 ### Generate cache key
 
-Your cache pool's getItem probably look like this: 
+Your cache pool's `getItem()` probably look like this: 
 ```php
 public function getItem($key)
 {
   $item = $this->storage->fetch($key);
-  if (false === $item || !$item instanceof CacheItemInterface) {
+  if (false === $item) {
     $item = new CacheItem($key);
   }
 
@@ -101,7 +101,7 @@ public function getItem($key, array $tags = [])
 {
   $taggedKey = $this->generateCacheKey($key, $tags);
   $item = $this->storage->fetch($taggedKey);
-  if (false === $item || !$item instanceof CacheItemInterface) {
+  if (false === $item) {
     $item = new CacheItem($key);
   }
 
@@ -115,6 +115,7 @@ You need to do the same with all functions that takes a cache key as argument.
 public function hasItem($key, array $tags = [])
 {
   $taggedKey = $this->generateCacheKey($key, $tags);
+  
   return $this->storage->exists($taggedKey);
 }
 ```
@@ -130,9 +131,9 @@ Here is the list of functions you need to change:
 
 ### Implement CachePool::getTagItem($key)
 
-The trait uses the cache as a key value store. The key is the tag name and the value is a random id created by 
-`uniqid()`. The way to access the cache is by a `getTagItem($key)`. This function will be very similar to your 
-`getItem($key, array $tags = [])`. The only difference is that the latter will call `generateCacheKey`. 
+The trait uses the cache as a key-value store. The key is the tag name and the value is a random id created by 
+`uniqid()`. The way to access the cache is by a protected function `getTagItem($key)`. This function will be very similar to your 
+`getItem($key, array $tags = [])`. The only difference is that the latter will call `generateCacheKey()`. 
 
 Consider your new `getItem($key, array $tags = [])`:
 
@@ -141,7 +142,7 @@ public function getItem($key, array $tags = [])
 {
   $taggedKey = $this->generateCacheKey($key, $tags);
   $item = $this->storage->fetch($taggedKey);
-  if (false === $item || !$item instanceof CacheItemInterface) {
+  if (false === $item) {
     $item = new CacheItem($key);
   }
 
@@ -151,10 +152,10 @@ public function getItem($key, array $tags = [])
 
 You would need `getTagItem($key)` to look like this: 
 ```php
-public function getTagItem($key)
+protected function getTagItem($key)
 {
   $item = $this->storage->fetch($key);
-  if (false === $item || !$item instanceof CacheItemInterface) {
+  if (false === $item) {
     $item = new CacheItem($key);
   }
 
@@ -162,7 +163,7 @@ public function getTagItem($key)
 }
 ```
 
-You could refactor it so the final result will look like this: 
+You could refactor the two so the final result will look like this: 
 ```php
 public function getItem($key, array $tags = [])
 {
@@ -171,10 +172,10 @@ public function getItem($key, array $tags = [])
   return $this->getTagItem($taggedKey);
 }
 
-public function getTagItem($key)
+protected function getTagItem($key)
 {
   $item = $this->storage->fetch($key);
-  if (false === $item || !$item instanceof CacheItemInterface) {
+  if (false === $item) {
     $item = new CacheItem($key);
   }
 
@@ -185,7 +186,7 @@ public function getTagItem($key)
 
 ### Deleting tags
 
-When you want to delete all keys with a specific tag you use the `TaggablePoolTrait::flushTag($name)`.
+When you want to delete all items with a specific tag you should use the `TaggablePoolTrait::flushTag($name)`.
 
 ```php
 public function clear(array $tags = [])
@@ -195,6 +196,7 @@ public function clear(array $tags = [])
     return $this->storage->flush();
   }
   
+  // Flush the items related to a specific tag
   foreach ($tags as $tag) {
     $this->flushTag($tag);
   }
