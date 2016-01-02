@@ -56,17 +56,16 @@ $pool->clear();
 If you are writing a PSR-6 implementation you may want to use this library. The implementation is easy and will work
 with all PSR-6 caches. 
 
-**Warning: All the cache keys will change because we have to generate new cache keys that 
-depends on the tags. This will include keys that do not use tags.**
-
-You need to do three changes on the implementation of `CacheItemPoolInterface`. 
+You need to do a few changes on the implementation of `CacheItemPoolInterface`. 
 
 * Implement `TaggablePoolInterface` and use `TaggablePoolTrait`
+* Implement `TaggableItemInterface` and use `TaggableItemTrait`
 * Use `TaggablePoolTrait::generateCacheKey($key, array $tags)` 
+* Use `TaggableItemInterface::getTaggedKey()` 
 * Implement `CachePool::getTagItem($key)`
 
 
-### Implement interface and use trait
+### Implement interface and use trait for Pool
 
 The trait has two protected methods; `generateCacheKey($key, array $tags)` and `flushTag($name)`.
 
@@ -74,6 +73,19 @@ The trait has two protected methods; `generateCacheKey($key, array $tags)` and `
 class Pool implements CacheItemPoolInterface, TaggablePoolInterface
 {
   use TaggablePoolTrait;
+  
+  // ...
+}
+```
+### Implement interface and use trait for Item
+
+The purpose of the trait is to be able to return a `taggedKey` and a normal `key`. Use the trait and rename your
+`getKey()` to `getTaggedKey()`. 
+
+```php
+class Pool implements CacheItemInterface, TaggableItemInterface
+{
+  use TaggableItemTrait;
   
   // ...
 }
@@ -128,6 +140,20 @@ Here is the list of functions you need to change:
 * clear
 * deleteItem
 * deleteItems
+
+### Use TaggableItemInterface::getTaggedKey()
+
+To make sure we fetch the correct item the cache pool should always use `$item->getTaggedKey`. This will return a
+cache key that depends on the tags. 
+
+```php
+public function save(CacheItemInterface $item)
+{
+  $key = $item->getTaggedKey();
+  
+  return $this->storage->save($key, $item);
+}
+```
 
 ### Implement CachePool::getTagItem($key)
 
