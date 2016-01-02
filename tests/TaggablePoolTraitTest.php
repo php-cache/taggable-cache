@@ -28,6 +28,9 @@ class TaggablePoolTraitTest extends \PHPUnit_Framework_TestCase
         $key1 = $cache->exposeGenerateCacheKey($inputKey, ['abc', '123']);
         $key2 = $cache->exposeGenerateCacheKey($inputKey, ['123', 'abc']);
         $this->assertTrue($key1 === $key2, 'Order should not matter when generating cache keys');
+
+        $key1 = $cache->exposeGenerateCacheKey($inputKey, []);
+        $this->assertTrue($inputKey === $key1, 'Key should not be altered if no tags used. ');
     }
 
     public function testFlushTag()

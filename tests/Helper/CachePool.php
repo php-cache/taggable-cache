@@ -28,14 +28,18 @@ class CachePool
      */
     private $memoryCache;
 
+    protected function validateTagName($name)
+    {
+    }
+
     public function getItem($key, array $tags = [])
     {
         $taggedKey = $this->generateCacheKey($key, $tags);
 
-        return $this->getTagItem($taggedKey);
+        return $this->getItemWithoutGenerateCacheKey($taggedKey);
     }
 
-    protected function getTagItem($key)
+    protected function getItemWithoutGenerateCacheKey($key)
     {
         if (isset($this->memoryCache[$key])) {
             $item = $this->memoryCache[$key];
@@ -48,7 +52,7 @@ class CachePool
 
     public function save(CacheItemInterface $item)
     {
-        $this->memoryCache[$item->getKey()] = $item;
+        $this->memoryCache[$item->getTaggedKey()] = $item;
 
         return true;
     }

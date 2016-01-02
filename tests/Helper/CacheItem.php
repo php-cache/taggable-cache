@@ -11,10 +11,14 @@
 
 namespace Cache\Taggable\Tests\Helper;
 
+use Cache\Taggable\TaggableItemInterface;
+use Cache\Taggable\TaggableItemTrait;
 use Psr\Cache\CacheItemInterface;
 
-class CacheItem implements CacheItemInterface
+class CacheItem implements CacheItemInterface, TaggableItemInterface
 {
+    use TaggableItemTrait;
+
     /**
      * @type string
      */
@@ -35,7 +39,8 @@ class CacheItem implements CacheItemInterface
      */
     public function __construct($key)
     {
-        $this->key = $key;
+        $this->taggedKey = $key;
+        $this->key       = $this->getKeyFromTaggedKey($key);
     }
 
     /**

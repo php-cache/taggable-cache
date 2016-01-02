@@ -47,7 +47,14 @@ trait TaggablePoolTrait
      *
      * @return CacheItemInterface
      */
-    abstract protected function getTagItem($key);
+    abstract protected function getItemWithoutGenerateCacheKey($key);
+
+    /**
+     * Make sure we do not use any invalid characters in the tag name. The actual tag name will be "tag:$name".
+     *
+     * @param string $name
+     */
+    abstract protected function validateTagName($name);
 
     /**
      * Reset the tag and return the new tag identifier.
@@ -60,7 +67,8 @@ trait TaggablePoolTrait
      */
     protected function flushTag($name)
     {
-        $item = $this->getTagItem($this->getTagKey($name));
+        $this->validateTagName($name);
+        $item = $this->getItemWithoutGenerateCacheKey($this->getTagKey($name));
 
         return $this->generateNewTagId($item);
     }
@@ -75,6 +83,10 @@ trait TaggablePoolTrait
      */
     protected function generateCacheKey($key, array $tags)
     {
+        if (empty($tags)) {
+            return $key;
+        }
+
         // We sort the tags because the order should not matter
         sort($tags);
 
@@ -96,7 +108,8 @@ trait TaggablePoolTrait
      */
     private function getTagId($name)
     {
-        $item = $this->getTagItem($this->getTagKey($name));
+        $this->validateTagName($name);
+        $item = $this->getItemWithoutGenerateCacheKey($this->getTagKey($name));
 
         if ($item->isHit()) {
             return $item->get();
@@ -114,7 +127,7 @@ trait TaggablePoolTrait
      */
     private function getTagKey($name)
     {
-        return 'tag:'.$name.':key';
+        return 'tag:'.$name;
     }
 
     /**

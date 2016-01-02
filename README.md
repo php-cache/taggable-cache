@@ -56,17 +56,17 @@ $pool->clear();
 If you are writing a PSR-6 implementation you may want to use this library. The implementation is easy and will work
 with all PSR-6 caches. 
 
-**Warning: All the cache keys will change because we have to generate new cache keys that 
-depends on the tags. This will include keys that do not use tags.**
-
-You need to do three changes on the implementation of `CacheItemPoolInterface`. 
+You need to do a few changes on the implementation of `CacheItemPoolInterface`. 
 
 * Implement `TaggablePoolInterface` and use `TaggablePoolTrait`
+* Implement `TaggableItemInterface` and use `TaggableItemTrait`
 * Use `TaggablePoolTrait::generateCacheKey($key, array $tags)` 
-* Implement `CachePool::getTagItem($key)`
+* Use `TaggableItemInterface::getTaggedKey()` 
+* Implement `CachePool::getItemWithoutGenerateCacheKey($key)`
+* Implement `CachePool::validateTagName($key)`
 
 
-### Implement interface and use trait
+### Implement interface and use trait for CacheItemPoolInterface
 
 The trait has two protected methods; `generateCacheKey($key, array $tags)` and `flushTag($name)`.
 
@@ -74,6 +74,34 @@ The trait has two protected methods; `generateCacheKey($key, array $tags)` and `
 class Pool implements CacheItemPoolInterface, TaggablePoolInterface
 {
   use TaggablePoolTrait;
+  
+  // ...
+}
+```
+
+### Implement interface and use trait for CacheItemInterface
+
+The purpose of the trait is to be able to return a `taggedKey` and a normal `key`. The trait has one protected function 
+`getKeyFromTaggedKey()` and one public function `getTaggedkey()`. You should use the trait and make sure you set values
+to your two keys. 
+
+```php
+class Pool implements CacheItemInterface, TaggableItemInterface
+{
+  use TaggableItemTrait;
+  
+  private $normalKey;
+  
+  public function __construct($key)
+  {
+    $this->taggedKey = $key;
+    $this->normalKey = $this->getKeyFromTaggedKey($key);
+  }
+  
+  public function getKey() 
+  {
+    return $this->normalKey;
+  }
   
   // ...
 }
@@ -129,10 +157,24 @@ Here is the list of functions you need to change:
 * deleteItem
 * deleteItems
 
-### Implement CachePool::getTagItem($key)
+### Use TaggableItemInterface::getTaggedKey()
+
+To make sure we fetch the correct item the cache pool should always use `$item->getTaggedKey`. This will return a
+cache key that depends on the tags. 
+
+```php
+public function save(CacheItemInterface $item)
+{
+  $key = $item->getTaggedKey();
+  
+  return $this->storage->save($key, $item);
+}
+```
+
+### Implement CachePool::getItemWithoutGenerateCacheKey($key)
 
 The trait uses the cache as a key-value store. The key is the tag name and the value is a random id created by 
-`uniqid()`. The way to access the cache is by a protected function `getTagItem($key)`. This function will be very similar to your 
+`uniqid()`. The way to access the cache is by a protected function `getItemWithoutGenerateCacheKey($key)`. This function will be very similar to your 
 `getItem($key, array $tags = [])`. The only difference is that the latter will call `generateCacheKey()`. 
 
 Consider your new `getItem($key, array $tags = [])`:
@@ -150,9 +192,9 @@ public function getItem($key, array $tags = [])
 }
 ```
 
-You would need `getTagItem($key)` to look like this: 
+You would need `getItemWithoutGenerateCacheKey($key)` to look like this: 
 ```php
-protected function getTagItem($key)
+protected function getItemWithoutGenerateCacheKey($key)
 {
   $item = $this->storage->fetch($key);
   if (false === $item) {
@@ -169,10 +211,10 @@ public function getItem($key, array $tags = [])
 {
   $taggedKey = $this->generateCacheKey($key, $tags);
   
-  return $this->getTagItem($taggedKey);
+  return $this->getItemWithoutGenerateCacheKey($taggedKey);
 }
 
-protected function getTagItem($key)
+protected function getItemWithoutGenerateCacheKey($key)
 {
   $item = $this->storage->fetch($key);
   if (false === $item) {
@@ -183,6 +225,23 @@ protected function getTagItem($key)
 }
 ```
 
+### Implement CachePool::validateTagName($key)
+
+We want to make sure the user do not try to use any invalid characters in the tags. The validation could be the same 
+as for normal keys. 
+
+```php
+public function validateTagName($name)
+{
+  $this->validateKey($name);
+}
+
+public function validateKey($name)
+{
+  // The function you are using to verify the key name for normal items. 
+}
+
+```
 
 ### Deleting tagged items
 
@@ -209,3 +268,9 @@ The `TaggablePoolTrait::flushTag($name)` changes the tag cache key so next time 
 `TaggablePoolTrait::generateCacheKey($key, array $tags)` you will get a different cache key back. This will not remove
 the items from the cache, which introduce a memory leak. That is why it is important to use memcached or redis, which 
 automatically purges stale records.
+
+
+## Test your tagging cache
+
+When you are happy with your implementation you should test it. We have provided some integration tests that will test
+your implementation for you. See this repository for more info: https://github.com/php-cache/integration-tests 
