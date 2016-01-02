@@ -48,7 +48,7 @@ class CachePool
 
     public function save(CacheItemInterface $item)
     {
-        $this->memoryCache[$item->getKey()] = $item;
+        $this->memoryCache[$item->getTaggedKey()] = $item;
 
         return true;
     }
