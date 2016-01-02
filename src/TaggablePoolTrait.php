@@ -75,6 +75,10 @@ trait TaggablePoolTrait
      */
     protected function generateCacheKey($key, array $tags)
     {
+        if (empty($tags)) {
+            return $key;
+        }
+
         // We sort the tags because the order should not matter
         sort($tags);
 
@@ -114,7 +118,7 @@ trait TaggablePoolTrait
      */
     private function getTagKey($name)
     {
-        return 'tag:'.$name.':key';
+        return 'tag:'.$name;
     }
 
     /**
