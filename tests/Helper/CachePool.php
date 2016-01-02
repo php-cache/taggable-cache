@@ -28,6 +28,10 @@ class CachePool
      */
     private $memoryCache;
 
+    protected function validateTagName($name)
+    {
+    }
+
     public function getItem($key, array $tags = [])
     {
         $taggedKey = $this->generateCacheKey($key, $tags);

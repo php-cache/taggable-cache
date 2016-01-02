@@ -63,9 +63,10 @@ You need to do a few changes on the implementation of `CacheItemPoolInterface`.
 * Use `TaggablePoolTrait::generateCacheKey($key, array $tags)` 
 * Use `TaggableItemInterface::getTaggedKey()` 
 * Implement `CachePool::getItemWithoutGenerateCacheKey($key)`
+* Implement `CachePool::validateTagName($key)`
 
 
-### Implement interface and use trait for Pool
+### Implement interface and use trait for CacheItemPoolInterface
 
 The trait has two protected methods; `generateCacheKey($key, array $tags)` and `flushTag($name)`.
 
@@ -77,7 +78,8 @@ class Pool implements CacheItemPoolInterface, TaggablePoolInterface
   // ...
 }
 ```
-### Implement interface and use trait for Item
+
+### Implement interface and use trait for CacheItemInterface
 
 The purpose of the trait is to be able to return a `taggedKey` and a normal `key`. Use the trait and rename your
 `getKey()` to `getTaggedKey()`. 
@@ -86,6 +88,14 @@ The purpose of the trait is to be able to return a `taggedKey` and a normal `key
 class Pool implements CacheItemInterface, TaggableItemInterface
 {
   use TaggableItemTrait;
+  
+  private $key;
+  
+  // Rename from getKey to getTaggedKey
+  public function getTaggedKey() 
+  {
+    return $this->key;
+  }
   
   // ...
 }
@@ -209,6 +219,23 @@ protected function getItemWithoutGenerateCacheKey($key)
 }
 ```
 
+### Implement CachePool::validateTagName($key)
+
+We want to make sure the user do not try to use any invalid characters in the tags. The validation could be the same 
+as for normal keys. 
+
+```php
+public function validateTagName($name)
+{
+  $this->validateKey($name);
+}
+
+public function validateKey($name)
+{
+  // The function you are using to verify the key name for normal items. 
+}
+
+```
 
 ### Deleting tagged items
 
@@ -235,3 +262,9 @@ The `TaggablePoolTrait::flushTag($name)` changes the tag cache key so next time 
 `TaggablePoolTrait::generateCacheKey($key, array $tags)` you will get a different cache key back. This will not remove
 the items from the cache, which introduce a memory leak. That is why it is important to use memcached or redis, which 
 automatically purges stale records.
+
+
+## Test your tagging cache
+
+When you are happy with your implementation you should test it. We have provided some integration tests that will test
+your implementation for you. See this repository for more info: https://github.com/php-cache/integration-tests 

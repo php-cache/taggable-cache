@@ -50,6 +50,13 @@ trait TaggablePoolTrait
     abstract protected function getItemWithoutGenerateCacheKey($key);
 
     /**
+     * Make sure we do not use any invalid characters in the tag name. The actual tag name will be "tag:$name".
+     *
+     * @param string $name
+     */
+    abstract protected function validateTagName($name);
+
+    /**
      * Reset the tag and return the new tag identifier.
      *
      * This will not delete anything form cache, only generate a new reference. This is a memory leak.
@@ -60,6 +67,7 @@ trait TaggablePoolTrait
      */
     protected function flushTag($name)
     {
+        $this->validateTagName($name);
         $item = $this->getItemWithoutGenerateCacheKey($this->getTagKey($name));
 
         return $this->generateNewTagId($item);
@@ -100,6 +108,7 @@ trait TaggablePoolTrait
      */
     private function getTagId($name)
     {
+        $this->validateTagName($name);
         $item = $this->getItemWithoutGenerateCacheKey($this->getTagKey($name));
 
         if ($item->isHit()) {
