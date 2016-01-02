@@ -39,7 +39,8 @@ class CacheItem implements CacheItemInterface, TaggableItemInterface
      */
     public function __construct($key)
     {
-        $this->key = $key;
+        $this->taggedKey = $key;
+        $this->key       = $this->getKeyFromTaggedKey($key);
     }
 
     /**
@@ -53,7 +54,7 @@ class CacheItem implements CacheItemInterface, TaggableItemInterface
     /**
      * @return string
      */
-    public function getTaggedKey()
+    public function getKey()
     {
         return $this->key;
     }

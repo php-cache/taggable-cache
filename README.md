@@ -81,20 +81,26 @@ class Pool implements CacheItemPoolInterface, TaggablePoolInterface
 
 ### Implement interface and use trait for CacheItemInterface
 
-The purpose of the trait is to be able to return a `taggedKey` and a normal `key`. Use the trait and rename your
-`getKey()` to `getTaggedKey()`. 
+The purpose of the trait is to be able to return a `taggedKey` and a normal `key`. The trait has one protected function 
+`getKeyFromTaggedKey()` and one public function `getTaggedkey()`. You should use the trait and make sure you set values
+to your two keys. 
 
 ```php
 class Pool implements CacheItemInterface, TaggableItemInterface
 {
   use TaggableItemTrait;
   
-  private $key;
+  private $normalKey;
   
-  // Rename from getKey to getTaggedKey
-  public function getTaggedKey() 
+  public function __construct($key)
   {
-    return $this->key;
+    $this->taggedKey = $key;
+    $this->normalKey = $this->getKeyFromTaggedKey($key);
+  }
+  
+  public function getKey() 
+  {
+    return $this->normalKey;
   }
   
   // ...

@@ -17,22 +17,31 @@ namespace Cache\Taggable;
 trait TaggableItemTrait
 {
     /**
-     * @return string
+     * @type string
      */
-    abstract public function getTaggedKey();
+    protected $taggedKey;
 
     /**
-     * Return the key for this item.
+     * A key that is dependent on the tags.
      *
      * @return string
      */
-    public function getKey()
+    public function getTaggedKey()
     {
-        $key = $this->getTaggedKey();
-        if (false === $pos = strrpos($key, ':')) {
-            return $key;
+        return $this->taggedKey;
+    }
+
+    /**
+     * Return the cache key for this item. This is the generic cache key that the calling library sees.
+     *
+     * @return string
+     */
+    protected function getKeyFromTaggedKey($taggedKey)
+    {
+        if (false === $pos = strrpos($taggedKey, ':')) {
+            return $taggedKey;
         }
 
-        return substr($key, $pos + 1);
+        return substr($taggedKey, $pos + 1);
     }
 }
