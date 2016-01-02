@@ -47,7 +47,7 @@ trait TaggablePoolTrait
      *
      * @return CacheItemInterface
      */
-    abstract protected function getTagItem($key);
+    abstract protected function getItemWithoutGenerateCacheKey($key);
 
     /**
      * Reset the tag and return the new tag identifier.
@@ -60,7 +60,7 @@ trait TaggablePoolTrait
      */
     protected function flushTag($name)
     {
-        $item = $this->getTagItem($this->getTagKey($name));
+        $item = $this->getItemWithoutGenerateCacheKey($this->getTagKey($name));
 
         return $this->generateNewTagId($item);
     }
@@ -100,7 +100,7 @@ trait TaggablePoolTrait
      */
     private function getTagId($name)
     {
-        $item = $this->getTagItem($this->getTagKey($name));
+        $item = $this->getItemWithoutGenerateCacheKey($this->getTagKey($name));
 
         if ($item->isHit()) {
             return $item->get();

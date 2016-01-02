@@ -62,7 +62,7 @@ You need to do a few changes on the implementation of `CacheItemPoolInterface`.
 * Implement `TaggableItemInterface` and use `TaggableItemTrait`
 * Use `TaggablePoolTrait::generateCacheKey($key, array $tags)` 
 * Use `TaggableItemInterface::getTaggedKey()` 
-* Implement `CachePool::getTagItem($key)`
+* Implement `CachePool::getItemWithoutGenerateCacheKey($key)`
 
 
 ### Implement interface and use trait for Pool
@@ -155,10 +155,10 @@ public function save(CacheItemInterface $item)
 }
 ```
 
-### Implement CachePool::getTagItem($key)
+### Implement CachePool::getItemWithoutGenerateCacheKey($key)
 
 The trait uses the cache as a key-value store. The key is the tag name and the value is a random id created by 
-`uniqid()`. The way to access the cache is by a protected function `getTagItem($key)`. This function will be very similar to your 
+`uniqid()`. The way to access the cache is by a protected function `getItemWithoutGenerateCacheKey($key)`. This function will be very similar to your 
 `getItem($key, array $tags = [])`. The only difference is that the latter will call `generateCacheKey()`. 
 
 Consider your new `getItem($key, array $tags = [])`:
@@ -176,9 +176,9 @@ public function getItem($key, array $tags = [])
 }
 ```
 
-You would need `getTagItem($key)` to look like this: 
+You would need `getItemWithoutGenerateCacheKey($key)` to look like this: 
 ```php
-protected function getTagItem($key)
+protected function getItemWithoutGenerateCacheKey($key)
 {
   $item = $this->storage->fetch($key);
   if (false === $item) {
@@ -195,10 +195,10 @@ public function getItem($key, array $tags = [])
 {
   $taggedKey = $this->generateCacheKey($key, $tags);
   
-  return $this->getTagItem($taggedKey);
+  return $this->getItemWithoutGenerateCacheKey($taggedKey);
 }
 
-protected function getTagItem($key)
+protected function getItemWithoutGenerateCacheKey($key)
 {
   $item = $this->storage->fetch($key);
   if (false === $item) {

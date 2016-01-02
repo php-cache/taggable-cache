@@ -32,10 +32,10 @@ class CachePool
     {
         $taggedKey = $this->generateCacheKey($key, $tags);
 
-        return $this->getTagItem($taggedKey);
+        return $this->getItemWithoutGenerateCacheKey($taggedKey);
     }
 
-    protected function getTagItem($key)
+    protected function getItemWithoutGenerateCacheKey($key)
     {
         if (isset($this->memoryCache[$key])) {
             $item = $this->memoryCache[$key];
