@@ -21,6 +21,13 @@ use Psr\Cache\CacheItemInterface;
 trait TaggablePoolTrait
 {
     /**
+     * This is a private storage where we cache/save the tag names and ids.
+     *
+     * @type array tagName => tagId
+     */
+    private $tags;
+
+    /**
      * From Psr\Cache\CacheItemPoolInterface.
      *
      * @param CacheItemInterface $item
@@ -92,7 +99,11 @@ trait TaggablePoolTrait
 
         $tagIds = [];
         foreach ($tags as $tag) {
-            $tagIds[] = $this->getTagId($tag);
+            if (isset($this->tags[$tag])) {
+                $tagIds[] = $this->tags[$tag];
+            } else {
+                $tagIds[] = $this->getTagId($tag);
+            }
         }
         $tagsNamespace = sha1(implode('|', $tagIds));
 
@@ -144,6 +155,9 @@ trait TaggablePoolTrait
         $item->set($value);
         $item->expiresAfter(null);
         $this->save($item);
+
+        // Save to temporary tag store
+        $this->tags[$item->getKey()] = $value;
 
         return $value;
     }
