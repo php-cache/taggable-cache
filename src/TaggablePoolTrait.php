@@ -57,7 +57,7 @@ trait TaggablePoolTrait
     abstract protected function getItemWithoutGenerateCacheKey($key);
 
     /**
-     * Make sure we do not use any invalid characters in the tag name. The actual tag name will be "tag:$name".
+     * Make sure we do not use any invalid characters in the tag name. The actual tag name will be "tag|$name".
      *
      * @param string $name
      */
@@ -107,7 +107,7 @@ trait TaggablePoolTrait
         }
         $tagsNamespace = sha1(implode('|', $tagIds));
 
-        return $tagsNamespace.':'.$key;
+        return $tagsNamespace.'|'.$key;
     }
 
     /**
@@ -138,13 +138,12 @@ trait TaggablePoolTrait
      */
     private function getTagKey($name)
     {
-        return 'tag:'.$name;
+        return 'tag|'.$name;
     }
 
     /**
      * A TagId is retrieved from cache using the TagKey.
      *
-     * @param \Psr\Cache\CacheItemPoolInterface $storage
      * @param CacheItemInterface                $item
      *
      * @return string
