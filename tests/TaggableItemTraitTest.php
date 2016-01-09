@@ -3,7 +3,7 @@
 /*
  * This file is part of php-cache\taggable-cache package.
  *
- * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>
+ * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>, Tobias Nyholm <tobias.nyholm@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -20,10 +20,10 @@ class TaggableItemTraitTest extends \PHPUnit_Framework_TestCase
         $item = new CacheItem('key');
         $this->assertEquals('key', $item->getKey());
 
-        $item = new CacheItem('foo:key');
+        $item = new CacheItem('key:foo');
         $this->assertEquals('key', $item->getKey());
 
-        $item = new CacheItem('foo:bar:key');
+        $item = new CacheItem('key:foo:bar');
         $this->assertEquals('key', $item->getKey());
     }
 
@@ -32,10 +32,10 @@ class TaggableItemTraitTest extends \PHPUnit_Framework_TestCase
         $item = new CacheItem('key');
         $this->assertEquals('key', $item->getTaggedKey());
 
-        $item = new CacheItem('foo:key');
-        $this->assertEquals('foo:key', $item->getTaggedKey());
+        $item = new CacheItem('key:foo');
+        $this->assertEquals('key:foo', $item->getTaggedKey());
 
-        $item = new CacheItem('foo:bar:key');
-        $this->assertEquals('foo:bar:key', $item->getTaggedKey());
+        $item = new CacheItem('key:foo:bar');
+        $this->assertEquals('key:foo:bar', $item->getTaggedKey());
     }
 }

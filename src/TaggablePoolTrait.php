@@ -3,7 +3,7 @@
 /*
  * This file is part of php-cache\taggable-cache package.
  *
- * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>
+ * (c) 2015-2015 Aaron Scherer <aequasi@gmail.com>, Tobias Nyholm <tobias.nyholm@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -107,7 +107,7 @@ trait TaggablePoolTrait
         }
         $tagsNamespace = sha1(implode('|', $tagIds));
 
-        return $tagsNamespace.':'.$key;
+        return $key.TaggablePoolInterface::TAG_SEPARATOR.$tagsNamespace;
     }
 
     /**
@@ -138,7 +138,7 @@ trait TaggablePoolTrait
      */
     private function getTagKey($name)
     {
-        return 'tag:'.$name;
+        return $name.TaggablePoolInterface::TAG_SEPARATOR.'tag';
     }
 
     /**
