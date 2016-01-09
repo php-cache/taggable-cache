@@ -144,7 +144,6 @@ trait TaggablePoolTrait
     /**
      * A TagId is retrieved from cache using the TagKey.
      *
-     * @param \Psr\Cache\CacheItemPoolInterface $storage
      * @param CacheItemInterface                $item
      *
      * @return string
