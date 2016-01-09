@@ -38,7 +38,7 @@ trait TaggableItemTrait
      */
     protected function getKeyFromTaggedKey($taggedKey)
     {
-        if (false === $pos = strrpos($taggedKey, ':')) {
+        if (false === $pos = strrpos($taggedKey, '|')) {
             return $taggedKey;
         }
 
