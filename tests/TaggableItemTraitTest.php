@@ -20,10 +20,10 @@ class TaggableItemTraitTest extends \PHPUnit_Framework_TestCase
         $item = new CacheItem('key');
         $this->assertEquals('key', $item->getKey());
 
-        $item = new CacheItem('key:foo');
+        $item = new CacheItem('key!foo');
         $this->assertEquals('key', $item->getKey());
 
-        $item = new CacheItem('key:foo:bar');
+        $item = new CacheItem('key!foo!bar');
         $this->assertEquals('key', $item->getKey());
     }
 
@@ -32,10 +32,10 @@ class TaggableItemTraitTest extends \PHPUnit_Framework_TestCase
         $item = new CacheItem('key');
         $this->assertEquals('key', $item->getTaggedKey());
 
-        $item = new CacheItem('key:foo');
-        $this->assertEquals('key:foo', $item->getTaggedKey());
+        $item = new CacheItem('key!foo');
+        $this->assertEquals('key!foo', $item->getTaggedKey());
 
-        $item = new CacheItem('key:foo:bar');
-        $this->assertEquals('key:foo:bar', $item->getTaggedKey());
+        $item = new CacheItem('key!foo!bar');
+        $this->assertEquals('key!foo!bar', $item->getTaggedKey());
     }
 }
