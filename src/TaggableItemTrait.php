@@ -38,7 +38,7 @@ trait TaggableItemTrait
      */
     protected function getKeyFromTaggedKey($taggedKey)
     {
-        if (false === $pos = strpos($taggedKey, ':')) {
+        if (false === $pos = strpos($taggedKey, TaggablePoolInterface::TAG_SEPARATOR)) {
             return $taggedKey;
         }
 
