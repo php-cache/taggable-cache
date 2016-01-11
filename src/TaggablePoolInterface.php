@@ -19,7 +19,7 @@ namespace Cache\Taggable;
  */
 interface TaggablePoolInterface
 {
-    const TAG_SEPARATOR = ':';
+    const TAG_SEPARATOR = '!';
 
     public function getItem($key, array $tags = []);
 
