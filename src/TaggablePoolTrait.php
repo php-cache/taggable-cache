@@ -57,9 +57,13 @@ trait TaggablePoolTrait
     abstract protected function getItemWithoutGenerateCacheKey($key);
 
     /**
-     * Make sure we do not use any invalid characters in the tag name. The actual tag name will be "tag:$name".
+     * Make sure we do not use any invalid characters in the tag name.
+     * If the tag name is invalid, an InvalidArgumentException should be thrown.
+     * The actual tag name will be "tag!$name".
      *
      * @param string $name
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     abstract protected function validateTagName($name);
 
