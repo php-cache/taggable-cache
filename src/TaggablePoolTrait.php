@@ -105,7 +105,7 @@ trait TaggablePoolTrait
                 $tagIds[] = $this->getTagId($tag);
             }
         }
-        $tagsNamespace = sha1(implode('|', $tagIds));
+        $tagsNamespace = implode('|', $tagIds);
 
         return $key.TaggablePoolInterface::TAG_SEPARATOR.$tagsNamespace;
     }
