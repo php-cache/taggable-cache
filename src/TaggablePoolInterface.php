@@ -11,13 +11,27 @@
 
 namespace Cache\Taggable;
 
-use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\CacheItemInterface;
 
 /**
- * This is a CacheItemPoolInterface tha has TagSupportInterface.
+ * This is a CacheItemPoolInterface tha HasTagSupportInterface.
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-interface TaggablePoolInterface extends CacheItemPoolInterface, HasTagSupportInterface
+interface TaggablePoolInterface extends HasTagSupportInterface
 {
+    /**
+     * {@inheritdoc from Psr\Cache\CacheItemPoolInterface}.
+     */
+    public function save(CacheItemInterface $item);
+
+    /**
+     * {@inheritdoc from Psr\Cache\CacheItemPoolInterface}.
+     */
+    public function saveDeferred(CacheItemInterface $item);
+
+    /**
+     * {@inheritdoc from Psr\Cache\CacheItemPoolInterface}.
+     */
+    public function commit();
 }
