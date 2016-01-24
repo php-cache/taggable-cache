@@ -11,11 +11,11 @@
 
 namespace Cache\Taggable\Tests\Helper;
 
-use Cache\Taggable\TaggableItemInterface;
+use Cache\Taggable\HasTaggableKeyInterface;
 use Cache\Taggable\TaggableItemTrait;
 use Psr\Cache\CacheItemInterface;
 
-class CacheItem implements CacheItemInterface, TaggableItemInterface
+class CacheItem implements CacheItemInterface, HasTaggableKeyInterface
 {
     use TaggableItemTrait;
 

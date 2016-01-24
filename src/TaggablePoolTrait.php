@@ -111,7 +111,7 @@ trait TaggablePoolTrait
         }
         $tagsNamespace = sha1(implode('|', $tagIds));
 
-        return $key.TaggablePoolInterface::TAG_SEPARATOR.$tagsNamespace;
+        return $key.HasTagSupportInterface::TAG_SEPARATOR.$tagsNamespace;
     }
 
     /**
@@ -142,7 +142,7 @@ trait TaggablePoolTrait
      */
     private function getTagKey($name)
     {
-        return $name.TaggablePoolInterface::TAG_SEPARATOR.'tag';
+        return $name.HasTagSupportInterface::TAG_SEPARATOR.'tag';
     }
 
     /**

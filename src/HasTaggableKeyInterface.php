@@ -14,7 +14,7 @@ namespace Cache\Taggable;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-interface TaggableItemInterface
+interface HasTaggableKeyInterface
 {
     /**
      * Get the key with the tag prefix.
