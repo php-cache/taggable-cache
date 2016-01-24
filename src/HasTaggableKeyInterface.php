@@ -11,11 +11,15 @@
 
 namespace Cache\Taggable;
 
-use Psr\Cache\CacheItemInterface;
-
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-interface TaggableItemInterface extends CacheItemInterface, HasTaggableKeyInterface
+interface HasTaggableKeyInterface
 {
+    /**
+     * Get the key with the tag prefix.
+     *
+     * @return string
+     */
+    public function getTaggedKey();
 }

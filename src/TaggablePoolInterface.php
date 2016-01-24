@@ -11,25 +11,13 @@
 
 namespace Cache\Taggable;
 
+use Psr\Cache\CacheItemPoolInterface;
+
 /**
- * Lets you add tags to your cache items. Prepend the PSR-6 function arguments with an array of tag names for
- * functions not requiring an CacheItemInterface.
+ * This is a CacheItemPoolInterface tha has TagSupportInterface.
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-interface TaggablePoolInterface
+interface TaggablePoolInterface extends CacheItemPoolInterface, HasTagSupportInterface
 {
-    const TAG_SEPARATOR = '!';
-
-    public function getItem($key, array $tags = []);
-
-    public function getItems(array $keys = [], array $tags = []);
-
-    public function hasItem($key, array $tags = []);
-
-    public function clear(array $tags = []);
-
-    public function deleteItem($key, array $tags = []);
-
-    public function deleteItems(array $keys, array $tags = []);
 }
