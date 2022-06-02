@@ -6,7 +6,7 @@
 [![Monthly Downloads](https://poser.pugx.org/cache/taggable-cache/d/monthly.png)](https://packagist.org/packages/cache/taggable-cache)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
-This repository has a adapter that makes any PSR-6 pool taggable. All PHPC ache pools support tagging out of the box. 
+This repository has an adapter that makes any PSR-6 pool taggable. All PHP Cache pools support tagging out of the box. 
 Using tags allow you to tag related items, and then clear the cached data for that tag only. It is a part of the PHP Cache 
 organisation. To read about features like tagging and hierarchy support please read the shared documentation at [www.php-cache.com](http://www.php-cache.com). 
 
